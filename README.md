@@ -8,6 +8,7 @@ HelloWorld project:
 	The simplest example of using the lcd library. Displays "Hello World" on an LCD.
 
 ReadRomCode project:
+
 	Reads the 64-bit lasered ROM code from a DS18B20 digital Thermometer.
 	Requires:
 		onewire.h
