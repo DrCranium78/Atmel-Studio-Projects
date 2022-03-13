@@ -17,6 +17,7 @@ ReadRomCode project:
 		ds18b20.c
 		
 DualThermo project:
+
 	Displays temperature readings from two DS18B20 digital thermometers on the same onewire line.
 	Requires:
 		onewire.h
