@@ -4,6 +4,7 @@ This folder contains files that are common to the projects in the subfolders. Al
 twi.h/c and lcd.h/cpp. Most projects use one or more additional files:
 
 HelloWorld project:
+
 	The simplest example of using the lcd library. Displays "Hello World" on an LCD.
 
 ReadRomCode project:
