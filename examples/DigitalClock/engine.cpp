@@ -2,7 +2,7 @@
  * engine.cpp
  *
  * Created: 18.12.2021
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose:	
  *
@@ -20,7 +20,7 @@
  *
  * License:
  * 
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy 
  *          of this software and associated documentation files (the "Software"), to deal 
@@ -220,7 +220,7 @@ Engine::Engine() : _dstate{this}, _astate{this}
 	
 		//  initialize and configure clock
 	_clock.init();	
-	_clock.set_mode(DSMODE12);					//  use 12 mode for this. 
+	_clock.set_mode(DSMODE12);					//  use 12 hr mode for this. 
 	_A = 21;
 	_B = 12;
 	_C = 29;
