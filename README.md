@@ -24,3 +24,13 @@ DualThermo project:
 		onewire.c
 		ds18b20.h
 		ds18b20.c
+
+DigitalClock project:
+
+	A simple digital clock demonstrating the use of the DS1307 real time clock, external interrupts 
+	and the microcontroller's internal timer.
+	Requires:
+		ds1307.h
+		ds1307.cpp
+		timer.h
+		timer.cpp
