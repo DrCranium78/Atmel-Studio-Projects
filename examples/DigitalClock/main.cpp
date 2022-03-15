@@ -3,7 +3,9 @@
  *
  * Purpose:	
  *
- *          To demonstrate the use of of an engine object to control the execution of a program.
+ *         A simple digital clock demonstrating the use of the DS1307 real time clock, 
+ *         external interrupts, the microcontroller's internal timer and a state machine 
+ *         to control the display behavior.
  *
  * Dependencies:
  *
@@ -11,7 +13,7 @@
  *
  * License:
  * 
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy 
  *          of this software and associated documentation files (the "Software"), to deal 
