@@ -3,7 +3,7 @@
  *
  * Version: 1.0.0
  * Created: 10.01.2022
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose:	To communicate with a DS1307 Real Time Clock via a TWI interface. 
  *
@@ -16,7 +16,7 @@
  *
  * License:
  * 
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy 
  *          of this software and associated documentation files (the "Software"), to deal 
@@ -61,10 +61,10 @@ class DS1307
 		/*
 		 *     Functions to set member fields
 		 */
-		bool set_12hms(uint8_t h, uint8_t m, uint8_t s, DSAMPM mi);				//  use this to set 12 hour mode
-		bool set_24hms(uint8_t h, uint8_t m, uint8_t s);						//  use this to set 24 hour mode
+		bool set_12hms(uint8_t h, uint8_t m, uint8_t s, DSAMPM mi);			//  use this to set 12 hour mode
+		bool set_24hms(uint8_t h, uint8_t m, uint8_t s);				//  use this to set 24 hour mode
 		bool set_ymd(uint8_t y, uint8_t m, uint8_t d);
-		void set_dow(DOW dow);												//  dow = day of week
+		void set_dow(DOW dow);								//  dow = day of week
 		
 		/*
 		 *     Functions to get member fields
@@ -101,12 +101,12 @@ class DS1307
 		/*
 		 *     Member fields
 		 */
-		uint8_t (*read_hr)(char);				//  pointer to a function
-		uint8_t _yr, _mth, _day, _dow;			//  year, month, day and day of week
-		uint8_t _hr, _min, _sec;				//  hour, minutes, seconds
+		uint8_t (*read_hr)(char);							//  pointer to a function
+		uint8_t _yr, _mth, _day, _dow;							//  year, month, day and day of week
+		uint8_t _hr, _min, _sec;							//  hour, minutes, seconds
 		
-		uint8_t _clkh;							//  clock halt
+		uint8_t _clkh;									//  clock halt
 		
-		DSAMPM _mi;								//  meridien indicator (AM/PM)
-		DSMODE _mode;							//  12 hour or 24 hour mode (24 is default)
+		DSAMPM _mi;									//  meridien indicator (AM/PM)
+		DSMODE _mode;									//  12 hour or 24 hour mode (24 is default)
 };
