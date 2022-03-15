@@ -27,8 +27,8 @@ DualThermo project:
 
 DigitalClock project:
 
-	A simple digital clock demonstrating the use of the DS1307 real time clock, external interrupts 
-	and the microcontroller's internal timer.
+	A simple digital clock demonstrating the use of the DS1307 real time clock, external interrupts, 
+	the microcontroller's internal timer and a state machine to control the display behavior.
 	Requires:
 		ds1307.h
 		ds1307.cpp
