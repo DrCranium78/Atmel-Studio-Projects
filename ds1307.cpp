@@ -3,7 +3,7 @@
  *
  * Version: 1.0.0
  * Created: 10.01.2022
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose:	To communicate with a DS1307 Real Time Clock via a TWI interface. 
  *
@@ -16,7 +16,7 @@
  *
  * License:
  * 
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy 
  *          of this software and associated documentation files (the "Software"), to deal 
@@ -68,6 +68,8 @@ static bool is_leap(unsigned int year)
 	 *     except if it is evenly divisible by 400.
 	 *     The first leap year after the adoption of the above rule was 1752, 
 	 *     but this function does not take this into consideration.
+	 *     The leap year logic can be found in Kernighan and Ritchie, 
+	 *     'The C Programming Language 2nd ed.', 1988, p. 41.
 	 */
 	return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
 }
@@ -83,15 +85,15 @@ static bool is_leap(unsigned int year)
  */
 static bool is_valid_date(uint8_t y, uint8_t m, uint8_t d)
 {
-	if (d > 31 || d == 0) return false;							//  day can not be 0 or larger than 31 in any case
-	else if (m == 4 || m == 6 || m == 9 || m == 11)				//  if month is apr, jun, sep or nov ...
+	if (d > 31 || d == 0) return false;						//  day can not be 0 or larger than 31 in any case
+	else if (m == 4 || m == 6 || m == 9 || m == 11)					//  if month is apr, jun, sep or nov ...
 	{
-		if (d == 31) return false;								//  ... and day is 31, the date is invalid.
+		if (d == 31) return false;						//  ... and day is 31, the date is invalid.
 	}
-	else if (m == 2)											//  if month is feb ...
+	else if (m == 2)								//  if month is feb ...
 	{
-		if (d >= 30) return false;								//  ... and day is 30 or 31 ...
-		else if(d == 29 && !is_leap(y)) return false;			//  ... or 29 in a non-leap year, the date is invalid
+		if (d >= 30) return false;						//  ... and day is 30 or 31 ...
+		else if(d == 29 && !is_leap(y)) return false;				//  ... or 29 in a non-leap year, the date is invalid
 	}
 	return true;
 }
@@ -108,8 +110,8 @@ static bool is_valid_date(uint8_t y, uint8_t m, uint8_t d)
  */
 static bool is_valid_time(uint8_t h, uint8_t m, uint8_t s, DSMODE mode)
 {	
-	if (mode) return !(h > 11 || h < 1 || m > 59 || s > 59);		//  12 hour mode
-	else return !(h > 23 || m > 59 || s > 59);						//  24 hour mode	
+	if (mode) return !(h > 11 || h < 1 || m > 59 || s > 59);			//  12 hour mode
+	else return !(h > 23 || m > 59 || s > 59);					//  24 hour mode	
 }
 
 /*
@@ -163,7 +165,7 @@ static uint8_t bcd2dec(uint8_t bcd)
  */
 static uint8_t read_12_hr(char data)
 {
-	return (data & 0x1F);						//  mask bits 7, 6 and 5
+	return (data & 0x1F);							//  mask bits 7, 6 and 5
 }
 
 /*
@@ -174,7 +176,7 @@ static uint8_t read_12_hr(char data)
  */
 static uint8_t read_24_hr(char data)
 {
-	return (data & 0x3F);						//  mask bits 7 and 6
+	return (data & 0x3F);							//  mask bits 7 and 6
 }
 
 
@@ -234,12 +236,12 @@ void DS1307::init()
 void DS1307::set_mode(DSMODE m)
 {
 	unsigned char temp_data;
-	read_register(0x02, &temp_data);			//  register 0x02 is the hour register
+	read_register(0x02, &temp_data);					//  register 0x02 is the hour register
 	
 	if (m == DSMODE24)
 	{
 		temp_data &= 0xBF;						//  clear BIT6 (the 12/24 hour mode bit. 0 means 24 hour mode)
-		read_hr = &read_24_hr;					//  redirect pointer to function
+		read_hr = &read_24_hr;						//  redirect pointer to function
 		_mode = DSMODE24;
 	}
 	else if (m == DSMODE12)
@@ -415,7 +417,7 @@ void DS1307::transfer_data() const
 {
 		//  don't overwrite clock halt bit
 	uint8_t sec = dec2bcd(_sec);
-	sec |= (_clkh << 7);							//  will set BIT7 if _clck == 0x01;
+	sec |= (_clkh << 7);								//  will set BIT7 if _clck == 0x01;
 	
 		//  the hour data have to be processed before transferred
 	uint8_t hr = dec2bcd(_hr);
@@ -424,10 +426,10 @@ void DS1307::transfer_data() const
 	hr |= (_mode << 6) | (_mi << 5);		
 	
 		//  transfer data
-	twi_open(DS1307_I2C_ADDRESS);					//  start transmission
+	twi_open(DS1307_I2C_ADDRESS);							//  start transmission
 	twi_write_ch(0x00);								//  select register 0x00.
 	twi_write_ch(sec);								//  register 0x00 stores clock halt bit and seconds
-	twi_write_ch(dec2bcd(_min));					//  the register pointer automatically increments...
+	twi_write_ch(dec2bcd(_min));							//  the register pointer automatically increments...
 	twi_write_ch(hr);								//  ... after each data byte is written.
 	twi_write_ch(dec2bcd(_dow));
 	twi_write_ch(dec2bcd(_day));
@@ -443,27 +445,27 @@ void DS1307::transfer_data() const
  */
 void DS1307::update()
 {
-	unsigned char data[7];							//  prepare to read 7 bytes of data from DS1307
+	unsigned char data[7];								//  prepare to read 7 bytes of data from DS1307
 	
-	twi_open(DS1307_I2C_ADDRESS);					//  open connection and start transmission
-	twi_read_str(0x00, data, 7);					//  read 7 bytes starting with register 0x00 into data array
+	twi_open(DS1307_I2C_ADDRESS);							//  open connection and start transmission
+	twi_read_str(0x00, data, 7);							//  read 7 bytes starting with register 0x00 into data array
 	twi_close();									//  close connection
 	
 		//  if 12hour mode, check bit 5 of hour. If set, PM, if clear AM
 	if (_mode == DSMODE12)
 	{
-		_mi = (DSAMPM)((data[2] & 0x20) >> 5);		//  isolate bit 5 and shift right 5 positions
+		_mi = (DSAMPM)((data[2] & 0x20) >> 5);					//  isolate bit 5 and shift right 5 positions
 	}	
 	
 		//  process data
-	_sec = bcd2dec(data[0] & 0x7F);					//  mask clock halt bit (bit 7)
+	_sec = bcd2dec(data[0] & 0x7F);							//  mask clock halt bit (bit 7)
 	_min = bcd2dec(data[1]);
 	_dow = bcd2dec(data[3]);
 	_day = bcd2dec(data[4]);
 	_mth = bcd2dec(data[5]);
 	_yr  = bcd2dec(data[6]);
 	
-	_hr = bcd2dec(read_hr(data[2]));				//  use pointed function to read/process data
+	_hr = bcd2dec(read_hr(data[2]));						//  use pointed function to read/process data
 }
 
 /*
