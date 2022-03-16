@@ -67,7 +67,7 @@
 /*
  *     Interrupt Service Routines (ISR) need access to engine and Timer
  */
-static Engine* _sinstance = nullptr;		//  Provides access to Engine from ISR0
+static Engine* _sinstance = nullptr;				//  Provides access to Engine from ISR0
 static Timer   _stimer;						//  ISR updates Timer
 
 /*
@@ -238,11 +238,11 @@ Engine::Engine() : _dstate{this}, _astate{this}
 	_current_state = &_dstate;
 		
 		//  enable and configure interrupts
-	DDRD  = 0x00;					//  clear data direction register on port d
-	PORTD |= BUTTON_INT_PIN;		//  set port bit 2 to enable internal pull up on PD2 (INT0)
+	DDRD  = 0x00;							//  clear data direction register on port d
+	PORTD |= BUTTON_INT_PIN;					//  set port bit 2 to enable internal pull up on PD2 (INT0)
 	
-	EICRA  = 0x0A;					//  rising edge generates an external interrupt request
-	SREG  |= 0x80;					//  enable interrupts by setting BIT7 in the Status Register	
+	EICRA  = 0x0A;							//  rising edge generates an external interrupt request
+	SREG  |= 0x80;							//  enable interrupts by setting BIT7 in the Status Register	
 }
 
 /*
@@ -272,15 +272,15 @@ void Engine::displaystate_changed()
 		//  change the state	
 	_current_state = _current_state -> next_state();		
 	
-		//  check if the new state is the active state and 		
+		//  check if the new state is the active state		
 	if (_current_state -> is_active())
 	{				
-		_display.display(ON);					//  if so, activate display.
+		_display.display(ON);					//  if new state is active, activate display.
 		_display.clear();
 		_display.backlight(ON);
 		_current_state -> reset();				//  reset timeout
-		_show_colon = true;						//  start with a visible colon
-		_countdown = 500;						//  initialize countdown timer.
+		_show_colon = true;					//  start with a visible colon
+		_countdown = 500;					//  initialize countdown timer.
 	}
 	else
 	{
@@ -295,31 +295,31 @@ void Engine::displaystate_changed()
  */
 void Engine::main_loop()
 {
-	int delta;										//  the execution time of the last iteration of main loop.
+	int delta;							//  The execution time of the last iteration of main loop.
 	while(true)
 	{
-		delta = _stimer.stop();						//  new delta
+		delta = _stimer.stop();					//  New delta
 		
 		
-		if (_current_state->is_active())			//  is the display active?
+		if (_current_state->is_active())			//  Is the display active?
 		{
 			//  update state
-			_current_state->update(delta);			//  if so, update the timeout counter in display state.
+			_current_state->update(delta);			//  If active, update the timeout counter in display state.
 			
 			//  update countdown
-			_countdown -= delta;					//  update the timeout counter for the colon.
-			if (_countdown <= 0)					//  if timed out
+			_countdown -= delta;				//  Update the timeout counter for the colon.
+			if (_countdown <= 0)				//  If timed out ...
 			{
-				_show_colon ^= 1;					//  toggle colon visibility by xor'ing with 1.
-				_countdown = 500;					//  reset countdown.
+				_show_colon ^= 1;			//  ... toggle colon visibility by xor'ing with 1.
+				_countdown = 500;			//  Reset countdown.
 			}
 		}
 		
-		_stimer.start();							//  start the timer
+		_stimer.start();					//  Start the timer.
 		
-		if (_current_state->is_active()) update();	//  only update if display is active
+		if (_current_state->is_active()) update();		//  Only update if display is active.
 				
-		_delay_ms(100);								//  delay 100ms between iterations
+		_delay_ms(100);						//  Delay 100ms between iterations
 	}
 }
 
@@ -328,13 +328,13 @@ void Engine::main_loop()
  */
 void Engine::update()
 {
-	_clock.update();													//  update clock
+	_clock.update();						//  Update clock.
 		
 		//  get and print date
-	_clock.get_ymd(_A, _B, _C);											//  grab data from _clock instance
-	sprintf(_buffer, "%02i.%02i.20%02i", _C, _B, _A);					//  prepare display buffer
-	_display.pos(FIRST, 3);												//  move cursor into position
-	_display.print(_buffer);											//  display date
+	_clock.get_ymd(_A, _B, _C);					//  Grab data from _clock instance.
+	sprintf(_buffer, "%02i.%02i.20%02i", _C, _B, _A);		//  Prepare display buffer.
+	_display.pos(FIRST, 3);						//  Move cursor into position.
+	_display.print(_buffer);					//  Display date.
 	
 		//  get and print time
 	_clock.get_12hms(_A, _B, _C, _MI);
