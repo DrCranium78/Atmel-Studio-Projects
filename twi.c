@@ -3,7 +3,7 @@
  *
  * Version: 1.0.0
  * Created: 10.12.2020
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose: To facilitate communication between a single microcontroller and simple
  *          I2C devices on the TWI bus.
@@ -30,7 +30,7 @@
  *
  *          This software is covered by a modified MIT License, see paragraph 4
  * 
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy 
  *          of this software and associated documentation files (the "Software"), to deal 
@@ -67,7 +67,7 @@
 #define F_TWI 100000ul						//  100kbps is standard mode
 #endif
 
-#include <avr/io.h>							//  contains definitions of f.ex. PORTC and DDRC
+#include <avr/io.h						//  contains definitions of f.ex. PORTC and DDRC
 #include "twi.h"
 
 /*
@@ -122,7 +122,7 @@ static unsigned char _twi_address = 0x00;				//  keep track of address for repea
 void twi_enable(void)
 {	
 	if (_twi_enabled) return;							//  is i2c already initialized/enabled?
-	_twi_enabled = 1;									//  only initialize once
+	_twi_enabled = 1;								//  only initialize once
 	
 		/*
 		 *     Activate internal pull-ups for TWI. The internal pull-up is enabled when 
@@ -148,11 +148,11 @@ void twi_enable(void)
 
 void twi_disable(void)
 {
-	if (!_twi_enabled) return;				//  is i2c already disabled?
+	if (!_twi_enabled) return;						//  is i2c already disabled?
 	_twi_enabled = 0;
 	
-	TWCR     &= ~TWI_ENABLE_MASK;			//  Reset TWI interrupt flag, disable TWI module and TWI interrupt	
-	TWI_PORT &= ~TWI_PINMASK;					//  deactivate internal pull-ups for TWI
+	TWCR     &= ~TWI_ENABLE_MASK;						//  Reset TWI interrupt flag, disable TWI module and TWI interrupt	
+	TWI_PORT &= ~TWI_PINMASK;						//  deactivate internal pull-ups for TWI
 }
 
 
@@ -175,21 +175,21 @@ int twi_open(unsigned char address)
 		 *     2. Wait for TWINT flag to clear. This indicates that the START condition has been transmitted.
 		 *     3. check value of TWI status register. Mask prescaler bits. Status != START indicates error.
 		 */
-	TWCR = TWI_START_CONDITION;										//  1.	send start condition		
-	while (!(TWCR & TWI_INTERRUPT_FLAG));							//  2.	wait for TWINT flag.
-	if ((TWSR & TWI_PRESCALER_MASK) != TWI_START) return 0;			//  3.  check value of status register while masking prescaler bits 
+	TWCR = TWI_START_CONDITION;							//  1.	send start condition		
+	while (!(TWCR & TWI_INTERRUPT_FLAG));						//  2.	wait for TWINT flag.
+	if ((TWSR & TWI_PRESCALER_MASK) != TWI_START) return 0;				//  3.  check value of status register while masking prescaler bits 
 	
 		/*
 		 *     3. Transmit SLA + W.
 		 *     4. Wait for TWINT flag to clear.
 		 *     5. Verify that slave has acknowledged.
 		 */	
-	TWDR = (_twi_address << 1);										//  Load SLA + W into TWI data register
-	TWCR = TWI_START_TRANSMISSION;									//  3.  Set TWI interrupt bit to start transmission of address	
-	while (!(TWCR & TWI_INTERRUPT_FLAG));							//  4.	wait for TWINT flag to clear.
-	if ((TWSR & TWI_PRESCALER_MASK) != TWI_MT_SLA_ACK) return 0;	//  5.  verify MT_SLA_ACK is received
+	TWDR = (_twi_address << 1);							//  Load SLA + W into TWI data register
+	TWCR = TWI_START_TRANSMISSION;							//  3.  Set TWI interrupt bit to start transmission of address	
+	while (!(TWCR & TWI_INTERRUPT_FLAG));						//  4.	wait for TWINT flag to clear.
+	if ((TWSR & TWI_PRESCALER_MASK) != TWI_MT_SLA_ACK) return 0;			//  5.  verify MT_SLA_ACK is received
 	
-	return 1;														//  connection open
+	return 1;									//  connection open
 }
 
 
@@ -213,9 +213,9 @@ int twi_write_ch(unsigned char data)
 		 *        is different from MT_DATA_ACK, this indicates an error.
 		 */
 	TWDR = data;
-	TWCR = TWI_START_TRANSMISSION;										// 1.
-	while(!(TWCR & TWI_INTERRUPT_FLAG));								// 2. 
-	if ((TWSR & TWI_PRESCALER_MASK) != TWI_MT_DATA_ACK) return 0;		// 3.
+	TWCR = TWI_START_TRANSMISSION;							// 1.
+	while(!(TWCR & TWI_INTERRUPT_FLAG));						// 2. 
+	if ((TWSR & TWI_PRESCALER_MASK) != TWI_MT_DATA_ACK) return 0;			// 3.
 	
 	return 1;
 }
@@ -254,9 +254,9 @@ static int twi_register(unsigned char reg)
 		 */
 		
 	TWDR = reg;
-	TWCR = TWI_START_TRANSMISSION;										//  1.
-	while(!(TWCR & TWI_INTERRUPT_FLAG));								//  2.
-	if ((TWSR & TWI_PRESCALER_MASK) != TWI_MT_DATA_ACK) return 0;		//  3.
+	TWCR = TWI_START_TRANSMISSION;							//  1.
+	while(!(TWCR & TWI_INTERRUPT_FLAG));						//  2.
+	if ((TWSR & TWI_PRESCALER_MASK) != TWI_MT_DATA_ACK) return 0;			//  3.
 	
 		/*  
 		 *  Repeat start condition, wait for REP_START.
@@ -271,8 +271,8 @@ static int twi_register(unsigned char reg)
 		 *  3. check value of TWI status register. 
 		 */
 	TWDR = (_twi_address << 1) | 0x01;
-	TWCR = (TWI_START_TRANSMISSION);										//  1.
-	while(!(TWCR & TWI_INTERRUPT_FLAG));									//  2.
+	TWCR = (TWI_START_TRANSMISSION);						//  1.
+	while(!(TWCR & TWI_INTERRUPT_FLAG));						//  2.
 	if ((TWSR & TWI_PRESCALER_MASK) != TWI_MR_SLA_ACK) return 0;			//  3. MR_SLA_ACK = 0x40: SLA+R has been transmitted, ACK received
 	
 	return 1;
@@ -290,8 +290,8 @@ int twi_read_ch(unsigned char reg, unsigned char *data)
 		 *     3. Check status register and mask prescaler bits. If status
 		 *        is different from MR_DATA_ACK, this indicates an error.
 		 */
-	TWCR = (TWI_RETURN_NACK);										//  1. 
-	while(!(TWCR & TWI_INTERRUPT_FLAG));									//  2.
+	TWCR = (TWI_RETURN_NACK);							//  1. 
+	while(!(TWCR & TWI_INTERRUPT_FLAG));						//  2.
 	if ((TWSR & TWI_PRESCALER_MASK) != TWI_MR_DATA_NACK) return 0;			//  3.
 	
 	*data = TWDR;
@@ -311,15 +311,15 @@ int twi_read_str(unsigned char reg, unsigned char *data, int n)
 	
 	for (int c = 0; c < n - 1; c++)
 	{
-		TWCR = TWI_RETURN_ACK;											//  read data and return ACK
+		TWCR = TWI_RETURN_ACK;							//  read data and return ACK
 		while(!(TWCR & TWI_INTERRUPT_FLAG));
 		if ((TWSR & TWI_PRESCALER_MASK) != TWI_MR_DATA_ACK) return 0;
-		*ptr++ = TWDR;													//  fetch data from TWI Data Register
+		*ptr++ = TWDR;								//  fetch data from TWI Data Register
 	}	
-	TWCR = TWI_RETURN_NACK;												//  Return NACK to stop transmission
-	while(!(TWCR & TWI_INTERRUPT_FLAG));								//  wait for interrupt flag to clear
+	TWCR = TWI_RETURN_NACK;								//  Return NACK to stop transmission
+	while(!(TWCR & TWI_INTERRUPT_FLAG));						//  wait for interrupt flag to clear
 	if ((TWSR & TWI_PRESCALER_MASK) != TWI_MR_DATA_NACK) return 0;
-	*ptr = TWDR;														//  fetch data
+	*ptr = TWDR;									//  fetch data
 
 	return 1;
 }
