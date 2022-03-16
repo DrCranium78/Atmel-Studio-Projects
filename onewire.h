@@ -3,7 +3,7 @@
  *
  * Version: 1.0.0
  * Created: 11.12.2020
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose: To facilitate communication with 1-wire devices using the 1-wire protocol.
  *	
@@ -24,7 +24,7 @@
  *
  * License:
  *
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy
  *          of this software and associated documentation files (the "Software"), to deal
@@ -71,7 +71,7 @@ int owi_detect_presence(void);
  *     \param data    one byte of data to send.
  *  
  *     note: The parameter is an unsigned char, but it is, in the end, just zeros
- *           and ones. the emphasis is on data, not how it is represented.
+ *           and ones. The emphasis is on data, not how it is represented.
  */
 void owi_write_byte(unsigned char data);
 
