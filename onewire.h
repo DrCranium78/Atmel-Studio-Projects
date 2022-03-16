@@ -120,7 +120,14 @@ void owi_search_rom(void);
 int owi_read_rom(uint8_t *rom_array);
 
 /*
- *     NOT IMPLEMENTED
+ *     Address a specific slave device on a multi-drop or single-drop bus. 
+ *
+ *     \param *romcode_array    Pointer to an 8 byte array of uint8_t that uniquely 
+ *                              identifies a device.
+ *
+ *     note:   Only the slave that exactly matches the 64 bit ROM code sequence will 
+ *             respond to the function command issued by the master; all other slaves
+ *             on the bus will wait for a reset pulse.
  */
 void owi_match_rom(uint8_t *romcode_array);
 
