@@ -3,7 +3,7 @@
  *
  * Version: 1.0.0
  * Created: 15.12.2020
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose: To facilitate communication with ds18b20 devices.
  *
@@ -20,7 +20,7 @@
  *
  * License:
  *
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy
  *          of this software and associated documentation files (the "Software"), to deal
@@ -61,7 +61,7 @@
  */
 #define CMD_CONVERT_TEMP		0x44
 #define CMD_READ_SCRATCHPAD		0xBE
-#define CMD_WRITE_SCRATCHPAD	0x4E
+#define CMD_WRITE_SCRATCHPAD		0x4E
 
 
 
@@ -73,17 +73,17 @@
  *     Tl = -55 or 0xC9 in hexadecimal two's complement representation, 
  *     and 12 bit resolution meaning 0.0625 degrees resolution.
  */
-static unsigned char _ds18b20_config[3] = {0x7D, 0xC9,DS18B20_12BIT};
+static unsigned char _ds18b20_config[3] = {0x7D, 0xC9, DS18B20_12BIT};
 
 /*
  *     An array of 9 unsigned chars to hold one byte used as a boolean, byte 0, 
- *     and a 64 bit ROM code, byte 1 - 8.
+ *     and a 64 bit ROM code that uniquely identifies a device, byte 1 - 8.
  */
 static unsigned char _ds18b20_address[9] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 /*
- *     An array of 5 unsigned chars to hold the contents of the DS18B20 scratchpad
- *     the contents are stored in the order: [0] Temp LSB, [1] Temp MSB, [2] Th, [3] Tl, [4] Config.
+ *     An array of 5 unsigned chars to hold the contents of the DS18B20 scratchpad.
+ *     The contents are stored in the order: [0] Temp LSB, [1] Temp MSB, [2] Th, [3] Tl, [4] Config.
  */
 static unsigned char _ds18b20_scratchpad[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
 
@@ -92,17 +92,17 @@ static unsigned char _ds18b20_scratchpad[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
  */
 static int ds18b20_write_scratchpad()
 {	
-	if (!owi_detect_presence()) return 0;					//  check whether ds18b20 is online
+	if (!owi_detect_presence()) return 0;						//  Check whether ds18b20 is online.
 	
 	
-	//  skip or match ROM and send command to write scratchpad
+		//  skip or match ROM and send command to write scratchpad
 	if (_ds18b20_address[0]) owi_match_rom(&_ds18b20_address[1]);
-	else owi_skip_rom();											//  send skip ROM command
-	owi_write_byte(CMD_WRITE_SCRATCHPAD);					//  send write scratchpad command
+	else owi_skip_rom();								//  Send skip ROM command.
+	owi_write_byte(CMD_WRITE_SCRATCHPAD);						//  Send write scratchpad command.
 	
 	for (int i = 0; i < 3; i++)
 	{
-		owi_write_byte(_ds18b20_config[i]);					//  write data
+		owi_write_byte(_ds18b20_config[i]);					//  Write data.
 	}
 	return 1;
 }
@@ -132,25 +132,34 @@ static int ds18b20_read_scratchpad()
 } 
 
 
+/*
+ *     This sets each byte of _ds18b20_address to zero.
+ */
 static void ds18b20_reset_rom()
 {
 	for (int i = 0; i < 9; i++) _ds18b20_address[i] = 0x00;
 }
 
 /*
- *     This combines the information in lsb and msb into a floating point number.
+ *     This combines the information in lsb and msb into a floating point number
+ *     according to the temperature register format specified in the DS18B20 datasheet.
+ *
+ *     \param lsb     The least significant byte of the 16 bit extended two's complement 
+ *                    number in the temperature register.
+ *     \param msb     The most significant byte.
+ *     \return        A floating point number representing the temperature reading.
  */     
 static float ds18b20_convert(unsigned char lsb, unsigned char msb)
 {
 	float temp = 0.0, factor = 0.5;
 	
-		//  isolate integral part by combing right nybble of msb with left nybble of lsb.
+		//  Isolate integral part by combining right nybble of msb with left nybble of lsb.
 	int8_t integral = (msb << 4) | (lsb >> 4);
 	
 		//  Isolate binary decimal part, that is right nybble of lsb.
 	uint8_t decimal = (lsb & 0x0F);
 	
-		//  Determine position of last active bit in decimal part.
+		//  Determine position of last active bit in decimal part. This is the resolution. 
 	uint8_t n = 0x08 >> ((_ds18b20_config[2] & 0x60) >> 5);
 	
 		//  Convert from bicimal to decimal.
@@ -215,8 +224,11 @@ int ds18b20_set_resolution(const int res)
 	_ds18b20_config[0] = _ds18b20_scratchpad[2];
 	_ds18b20_config[1] = _ds18b20_scratchpad[3];
 	_ds18b20_config[2] = res;	
+	
+		//  write to scratchpad and reset address.
 	if (!ds18b20_write_scratchpad()) return 0;
 	ds18b20_reset_rom();
+	
 	return 1;
 }
 
@@ -239,9 +251,10 @@ int ds18b20_set_alarms(int8_t tl, int8_t th)
 	_ds18b20_config[1] = tl;
 	_ds18b20_config[2] = _ds18b20_scratchpad[4];	
 	
-		
+		//  write to scratchpad and reset address.
 	if (!ds18b20_write_scratchpad()) return 0;
 	ds18b20_reset_rom();
+	
 	return 1;
 }
 
@@ -251,6 +264,7 @@ int ds18b20_read_rom(uint8_t *romcode_array)
 {		
 		//  The array has to be zeroed.
 	for (int i = 0; i < 8; i++) romcode_array[i] = 0x00;
+	
 		//  Read the ROM code.
 	return owi_read_rom(romcode_array);	
 }
