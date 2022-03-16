@@ -3,7 +3,7 @@
  *
  * Version: 1.0.0
  * Created: 11.12.2020
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose: To facilitate communication with 1-wire devices using the 1-wire protocol.
  *
@@ -24,7 +24,7 @@
  *
  * License:
  *
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy
  *          of this software and associated documentation files (the "Software"), to deal
@@ -68,9 +68,9 @@
  */
 #define OWI_PORT		PORTB
 #define OWI_DDR			DDRB
-#define OWI_PIN         PINB
+#define OWI_PIN         	PINB
 #define OWI_PINMASK		0x01
-#define OWI_IPINMASK	0xFE					//  inverted pin mask
+#define OWI_IPINMASK		0xFE					//  inverted pin mask
 
 /*
  *     When a system is initially powered up, the master must identify the ROM codes
@@ -79,7 +79,7 @@
  *     a process of elimination that requires the master to perform a search ROM cycle
  *     as many times as necessary to identify all of the slave devices.
  */
-#define OWI_SEARCH_ROM		  0xF0
+#define OWI_SEARCH_ROM		0xF0
 
 /*
  *     This command can only be used when there is one slave on the bus. It allows the 
@@ -88,7 +88,7 @@
  *     on the bus, a data collision will occur when all the slaves attempt to respond 
  *     at the same time.
  */
-#define OWI_READ_ROM		  0x33
+#define OWI_READ_ROM		0x33
 
 /*
  *     The match ROM command followed by a 64-bit ROM code sequence allows the bus master
@@ -96,7 +96,7 @@
  *     that exactly matches the 64-bit ROM code sequence will respond to the function 
  *     command issued by the master. All other slaves will wait for a reset pulse.
  */
-#define OWI_MATCH_ROM		  0x55
+#define OWI_MATCH_ROM		0x55
 
 /*
  *     The master can use this command to address all devices on the bus simultaneously
@@ -107,7 +107,7 @@
  *     Note that the read scratchpad command can follow the skip ROM command only if there
  *     is a single slave device on the bus.
  */
-#define OWI_SKIP_ROM          0xCC
+#define OWI_SKIP_ROM		0xCC
 
 /*
  *     The operation of this command is identical to the operation of the search ROM command
@@ -117,7 +117,7 @@
  *     command followed by data exchange, the bus master must return to step 1 (initialization)
  *     in the transaction sequence.
  */
-#define OWI_ALARM_SEARCH	  0xEC
+#define OWI_ALARM_SEARCH	0xEC
 
 
 
@@ -150,12 +150,12 @@ static uint8_t owi_crc(uint8_t databyte, uint8_t crc)
 {
 	uint8_t feedback;
 	
-	for (uint8_t c = 0; c < 8; c++)					//  for all 8 bits
+	for (uint8_t c = 0; c < 8; c++)					//  For all 8 bits ...
 	{
-		feedback = (crc ^ databyte) & 0x01;			//  xor lsbit of data and accumulated crc
-		crc >>= 1;									//  shift and ...
-		crc ^= 0x8c * feedback;						//  ... feed result back into x4, x5 (shifted) and x8
-		databyte >>= 1;								//  shift databyte into position for next xor
+		feedback = (crc ^ databyte) & 0x01;			//  ... xor lsbit of data and accumulated crc.
+		crc >>= 1;						//  Shift and ...
+		crc ^= 0x8c * feedback;					//  ... feed result back into x4, x5 (shifted) and x8.
+		databyte >>= 1;						//  Shift databyte into position for next xor.
 	}
 	return crc;
 }
@@ -169,8 +169,8 @@ static uint8_t owi_crc(uint8_t databyte, uint8_t crc)
  */
 static void release_line(void)
 {
-	OWI_DDR  &= OWI_IPINMASK;		//  clear the data direction 
-	OWI_PORT |= OWI_PINMASK;		//  set the port bit
+	OWI_DDR  &= OWI_IPINMASK;			//  clear the data direction 
+	OWI_PORT |= OWI_PINMASK;			//  set the port bit
 }
 
 
@@ -180,8 +180,8 @@ static void release_line(void)
  */
 static void pull_line(void)
 {
-	OWI_DDR  |= OWI_PINMASK;				//  set the data direction
-	OWI_PORT &= OWI_IPINMASK;				//  clear the port bit		
+	OWI_DDR  |= OWI_PINMASK;			//  set the data direction
+	OWI_PORT &= OWI_IPINMASK;			//  clear the port bit		
 }
 
 
@@ -196,7 +196,7 @@ static void owi_write_1(void)
 	pull_line();
 	_delay_us(1);
 	release_line();
-	_delay_us(64);							//  leave line hight for the rest of the 65us bit period
+	_delay_us(64);					//  leave line hight for the rest of the 65us bit period
 }
 
 
@@ -211,7 +211,7 @@ static void owi_write_0(void)
 	pull_line();
 	_delay_us(60);
 	release_line();
-	_delay_us(5);							//  leave line for at least 5us
+	_delay_us(5);					//  leave line for at least 5us
 }
 
 
@@ -219,8 +219,8 @@ static void owi_write_0(void)
 /*
  *     Read bit, returns 1 or 0.
  *     This is done by sending a high bit, that is pulling the line down 
- *     for 1 - 15us, then releasing it. after a few microsecond, the line 
- *     level is checked if the line is high, 1 is read, and if the line 
+ *     for 1 - 15us, then releasing it. After a few microseconds, the line 
+ *     level is checked. If the line is high, 1 is read, and if the line 
  *     is low, a 0 is read. 
  */
 static int owi_read_bit(void)
@@ -230,7 +230,7 @@ static int owi_read_bit(void)
 	pull_line();			
 	_delay_us(1);
 	release_line();
-	_delay_us(14);							//  the line should be sampled 15us after the line was pulled low
+	_delay_us(14);					//  the line should be sampled 15us after the line was pulled low
 		
 	if (OWI_PIN & OWI_PINMASK) bit = 1;
 	
@@ -248,16 +248,15 @@ int owi_detect_presence(void)
 {
 	int presence = 1;
 		
-		/*
-		 *     start transaction by holding the line down for 
-		 *     480 - 560us. This is the RESET PULSE
-		 */	
-	pull_line();								//  pull line down for 480us
+		
+		//  Start transaction by holding the line down for 
+		//  480 - 560us. This is the RESET PULSE		 
+	pull_line();							//  Pull line down for 480us.
 	_delay_us(480);
 	release_line();								
-	_delay_us(60);								//  wait for 60us to sample the line
+	_delay_us(60);							//  Wait for 60us to sample the line.
 		
-	if (OWI_PIN & OWI_PINMASK) presence = 0;	//  is line level is high: no presence detected	
+	if (OWI_PIN & OWI_PINMASK) presence = 0;			//  Is line level is high? If so, no presence detected.
 	_delay_us(420);
 	
 	return presence;
@@ -271,19 +270,19 @@ int owi_detect_presence(void)
  *     is used to mask the data to check each individual bit. Mask is shifted 
  *     one bit to the left with each iteration of the loop so that the bits in 
  *     data are transmitted lsb first. The eight time mask is shifted, it becomes 
- *     0 and the loop condition fails. 
+ *     0 and the loop condition fails, terminating the loop. 
  */
 void owi_write_byte(unsigned char data)
 {		
-	for (uint8_t mask = 0x01; mask > 0x00; mask <<= 1)		//  for each bit in the byte
+	for (uint8_t mask = 0x01; mask > 0x00; mask <<= 1)		//  For each bit in the byte ...
 	{
-		if (data & mask)									//  if bit is 1...
+		if (data & mask)					//  ... if bit is 1 ...
 		{
-			owi_write_1();									//  write a 1 on the bus
+			owi_write_1();					//  ... write a 1 on the bus.
 		}
-		else												//  if bit is 0... 
+		else							//  ... If bit is 0 ... 
 		{
-			owi_write_0();									//  write a 0 on the bus
+			owi_write_0();					//  ... write a 0 on the bus.
 		}			
 	}	
 }
@@ -296,13 +295,13 @@ void owi_write_byte(unsigned char data)
  */
 unsigned char owi_read_byte(void)
 {
-	unsigned char data = 0x00;								//  initialize destination buffer
+	unsigned char data = 0x00;					//  Initialize destination buffer.
 	
-	for (uint8_t mask = 0x01; mask > 0x00; mask <<= 1)		//  read 8 bits
+	for (uint8_t mask = 0x01; mask > 0x00; mask <<= 1)		//  Read 8 bits.
 	{
-		if (owi_read_bit())									//  read one bit from the bus
+		if (owi_read_bit())					//  Read one bit from the bus.
 		{
-			data |= mask;									//  copy to buffer if bit is set
+			data |= mask;					//  Copy to buffer if bit is set.
 		}		
 	}
 	
@@ -317,7 +316,7 @@ unsigned char owi_read_byte(void)
  *     be polled using this function. The function returns 1 if busy and 0 if 
  *     ready.
  * 
- *     example: while(owi_is_busy()) _delay_ms(10);
+ *     Example: while(owi_is_busy()) _delay_ms(10);
  */
 int owi_is_busy(void)
 {
@@ -416,9 +415,9 @@ void owi_skip_rom(void)
  *       value of the first bit of its ROM data onto the bus. The master will 
  *       then read another bit. The slave will place the complement of the first 
  *       bit on the bus.
- *     - If the master reads 11, that is, the line is never pulled low, the 
+ *     - If the master reads 0b11, that is, the line is never pulled low, the 
  *       device is not responding, meaning that the alarm flag is not set. If 
- *       it reads 01 or 10, the device is responding and the alarm flag is set.
+ *       it reads 0b01 or 0b10, the device is responding and the alarm flag is set.
  *     - Finally, the master writes the first bit of the slave's ROM code to 
  *       keep the device selected.
  */
