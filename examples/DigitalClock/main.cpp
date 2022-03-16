@@ -1,5 +1,8 @@
 /*
  * main.cpp
+ * 
+ * Created: 15.01.2022
+ *  Author: Frank Bjørnø
  *
  * Purpose:	
  *
@@ -13,7 +16,7 @@
  *
  * License:
  * 
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2022 Frank Bjørnø
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy 
  *          of this software and associated documentation files (the "Software"), to deal 
