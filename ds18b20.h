@@ -3,7 +3,7 @@
  *
  * Version: 1.0.0
  * Created: 15.12.2020
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose: To facilitate communication with ds18b20 devices.
  *	
@@ -20,7 +20,7 @@
  *
  * License:
  *
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy
  *          of this software and associated documentation files (the "Software"), to deal
@@ -80,8 +80,8 @@ int ds18b20_read_temp(float *temp);
 
 /*
  *     Set the temperature resolution from 0.5 degrees to 0.0625 degrees. This 
- *     will significantly affect temperature conversion time from 93.75ms, from
- *     9 bit resolution (0.5 degrees) to 750ms for 12 bit resolution (0.0625).
+ *     will significantly affect temperature conversion time from 93.75ms at 
+ *     9 bit resolution (0.5 degrees) to 750ms at 12 bit resolution (0.0625).
  * 
  *     \param res       Use values from enumeration DS18B20_RESOLUTION, if not
  *                      behavior will be undefined. Default is 12 bit resolution.
@@ -111,8 +111,8 @@ int ds18b20_set_resolution(const int res);
  *            comparison. If the measured temperature is lower than or equal to
  *            Tl or higher or equal to Th, an alarm condition exists and an alarm
  *            flag is set inside the DS18B20. This means that if, f.ex, Tl is set 
- *            to 18, the alarm flag is set when the temperature drops below 19, not
- *            when it drops below 18.
+ *            to 18, the alarm flag is set when the temperature drops below 19.0, not
+ *            when it drops below 18.0.
  */
 int ds18b20_set_alarms(int8_t tl, int8_t th);
 
