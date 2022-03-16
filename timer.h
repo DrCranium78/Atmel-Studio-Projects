@@ -3,7 +3,7 @@
  *
  * Version: 1.0.0
  * Created: 16.12.2020
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose:	
  *
@@ -30,7 +30,7 @@
  *
  * License:
  * 
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy 
  *          of this software and associated documentation files (the "Software"), to deal 
@@ -57,10 +57,10 @@ class Timer
 	public:
 		Timer();
 		void start();				//  resets milliseconds count
-		unsigned int stop();		//  returns number of milliseconds since start (roughly)
+		unsigned int stop();			//  returns number of milliseconds since start (roughly)
 		
 		void operator++();			//  prefix increase number of milliseconds. generally called from timer interrupt
-		void operator++(int);		//  postfix
+		void operator++(int);			//  postfix
 	private:	
 		unsigned int _count;
 };
