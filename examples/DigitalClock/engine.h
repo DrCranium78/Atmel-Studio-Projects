@@ -2,7 +2,7 @@
  * engine.h
  *
  * Created: 18.12.2021
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose:	
  *
@@ -20,7 +20,7 @@
  *
  * License:
  * 
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy 
  *          of this software and associated documentation files (the "Software"), to deal 
@@ -68,7 +68,7 @@ class DisplayState
 {
 	public:
 		DisplayState(StateMachine *sm);
-		virtual bool is_active();						//  active state?
+		virtual bool is_active();					//  active state?
 		virtual void update(int dt);
 		virtual void button_pressed();
 		
@@ -78,9 +78,9 @@ class DisplayState
 		DisplayState* next_state();
 	protected:
 		StateMachine *_sm;
-		int           _timeout;							//  time (ms) until the state should change.
-		int           _def_timeout;						//  default initialization for _timeout
-		DisplayState *_next_state;						//  pointer to next state.
+		int           _timeout;						//  time (ms) until the state should change.
+		int           _def_timeout;					//  default initialization for _timeout
+		DisplayState *_next_state;					//  pointer to next state.
 };
 
 
@@ -120,10 +120,10 @@ class Engine : public StateMachine
 	public:
 		Engine();
 		
-		void button_pressed();					//  call this from Interrupt Service Routine (ISR)
-		void run();								//  call this to start the engine/program
+		void button_pressed();						//  call this from Interrupt Service Routine (ISR)
+		void run();							//  call this to start the engine/program
 		
-		virtual void displaystate_changed();	//  an instance of DisplayState calls this when state changes
+		virtual void displaystate_changed();				//  an instance of DisplayState calls this when state changes
 	private:	
 		void main_loop();						
 		void update();							//  does updating between iterations in main loop.
