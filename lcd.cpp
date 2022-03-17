@@ -3,13 +3,13 @@
  *
  * Version: 1.0.0
  * Created: 01.10.2021
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose:	To transmit instructions to a 1602 LCD via a TWI interface.
  *
  * Limitations:
  *
- *	       The functionality is deliberately kept to a minimum and no error checking of any
+ *	    The functionality is deliberately kept to a minimum and no error checking of any
  *          kind will be performed. This is by design.
  *
  *          This library is designed to work with an I2C interface that is usually soldered
@@ -28,7 +28,7 @@
  *
  * License:
  *
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy
  *          of this software and associated documentation files (the "Software"), to deal
@@ -101,30 +101,35 @@ void LCD::init()
 {
 	if (!twi_is_enabled()) twi_enable();
 	
-		//  In case this is the first thing that is called in the main program.
-		//  16ms is the power-on initialization time for LCD16x2.
-	_delay_ms(16);				//  wait for more than 15ms after Vcc rises to 4.5V
+		/*  
+		 *    In case this is the first thing that is called in the main program.
+		 *    16ms is the power-on initialization time for LCD16x2.
+		 */
+	_delay_ms(16);							//  wait for more than 15ms after Vcc rises to 4.5V
 	
 		//  Start transmission on the TWI bus
 	twi_open(_twi_address);
 
-		//  Initialize the display to 8-bit mode: 0b0011 0000 = 0x30 (Function Set: 8-bit interface)
-		//  the initialization sequence is as follows:
-		//  send 0x30, wait for more than 4.1ms
-		//  send 0x30, wait for more than 100us
-		//  send 0x30, wait for more than 100us		
-	
-	latch_data(0x30);			//  latch_data sends the data and toggles the enable pin
-	_delay_us(4100);			//  wait for more than 4.1ms
-	
-	latch_data(0x30);
-	_delay_us(100);
+		/*
+		 *  Initialize the display to 8-bit mode: 0b0011 0000 = 0x30 (Function Set: 8-bit interface)
+		 *  the initialization sequence is as follows:
+		 *  send 0x30, wait for more than 4.1ms
+		 *  send 0x30, wait for more than 100us
+		 *  send 0x30, wait for more than 100us		
+		 */		
+	latch_data(0x30);						//  latch_data sends the data and toggles the enable pin
+	_delay_us(4100);						//  wait for more than 4.1ms
 	
 	latch_data(0x30);
 	_delay_us(100);
 	
-		//  Configure 4-bit mode. 0b0010 0000 = 0x20: Function Set: 4-bit interface
-		//  This command, sent while the display is in 8 bit mode, changes the display to 4 bit mode	
+	latch_data(0x30);
+	_delay_us(100);
+	
+		/*
+		 *  Configure 4-bit mode. 0b0010 0000 = 0x20: Function Set: 4-bit interface
+		 *  This command, sent while the display is in 8 bit mode, changes the display to 4 bit mode	
+		 */	
 	latch_data(0x20);
 	_delay_us(100);
 	
@@ -132,10 +137,10 @@ void LCD::init()
 	twi_close();	
 	
 		//  Reconfigure 4-bit mode. Interface is now 4 bits.
-	command(0x28);		// Function Set: 4-bit interface, dual line, 5x8 font
+	command(0x28);							// Function Set: 4-bit interface, dual line, 5x8 font
 		
-	clear();			//  clear screen
-	display(ON);		//  display on
+	clear();							//  clear screen
+	display(ON);							//  display on
 }
 
 		
@@ -213,7 +218,7 @@ void LCD::backlight(lcd_mode mode)
  */ 
 void LCD::display(lcd_mode mode) const
 {
-	transmit(mode * CMD_DISPLAY_ON | !mode * CMD_DISPLAY_OFF);		//  branchless. works because mode is either true or false.
+	transmit(mode * CMD_DISPLAY_ON | !mode * CMD_DISPLAY_OFF);	//  branchless. works because mode is either true or false.
 	_delay_ms(39);
 }
 
@@ -229,12 +234,12 @@ void LCD::display(lcd_mode mode) const
  *                not handle line breaks.
  *
  *     Example:   Print a simple string
- *                print("  Hello World!  ");
+ *                display.print("  Hello World!  ");
  *
  *     Example:   Print a formatted string
- *                char buffer[17];							//  16 characters + string terminator
- *                sprintf(buffer, "%-16s", "Hello!");		//  format string using sprintf
- *                printf(buffer);
+ *                char buffer[17];					//  16 characters + string terminator
+ *                sprintf(buffer, "%-16s", "Hello!");			//  format string using sprintf
+ *                display.print(buffer);
  */
 void LCD::print(const char *string) const
 {
@@ -262,7 +267,7 @@ void LCD::print(const char *string) const
 void LCD::command(unsigned char command)
 {
 	transmit(command);
-	_delay_us(39);										//  all commands require 39us, except clear display and return home
+	_delay_us(39);							//  all commands require 39us, except clear display and return home
 }
 
 
@@ -280,9 +285,9 @@ void LCD::command(unsigned char command)
  */	
 void LCD::latch_data(const unsigned char data) const
 {
-	twi_write_ch(data | LCD_ENABLE);				//  set ENABLE bit
+	twi_write_ch(data | LCD_ENABLE);				//  transmit data with ENABLE bit set high
 	_delay_us(1);
-	twi_write_ch(data & LCD_DISABLE);				//  clear ENABLE bit
+	twi_write_ch(data & LCD_DISABLE);				//  transmit data with ENABLE bit set low
 }
 
 
@@ -334,7 +339,7 @@ void LCD::transmit(const char *data) const
 	while (*data != 0)
 	{
 			//  prepare high data nybble
-		cmd = (*data & 0xF0) | ctrl;			//  mask low data nybble and OR in control nybble			
+		cmd = (*data & 0xF0) | ctrl;				//  mask low data nybble and OR in control nybble			
 		latch_data(cmd);
 		
 			//  prepare low data nybble			//  shift low data into position and OR in control nybble
