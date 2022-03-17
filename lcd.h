@@ -3,13 +3,13 @@
  *
  * Version: 1.0.0
  * Created: 01.10.2021
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose:	To transmit instructions to a 1602 LCD via a TWI interface.
  *	
  * Limitations:
  *
- *	       The functionality is deliberately kept to a minimum and no error checking of any 
+ *	    The functionality is deliberately kept to a minimum and no error checking of any 
  *          kind will be performed. This is by design.
  *
  *          This library is designed to work with an I2C interface that is usually soldered 
@@ -28,7 +28,7 @@
  *
  * License:
  * 
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy 
  *          of this software and associated documentation files (the "Software"), to deal 
@@ -84,13 +84,13 @@ class LCD
 		 *     at least by the author. For more exotic functionality, consider the 
 		 *     command function with the macros defined at the top of this file.
 		 */       
-		void clear() const;									//  clears the display or screen
-		void home() const;									//  sets the caret in the first position of the first line
-		void line(lcd_line line) const;						//  sets the caret in the first position of the given line (FIRST or SECOND)
-		void pos(lcd_line line, uint8_t col) const;			//  sets the caret in the position indicated by col (0 - 15) of the given line
+		void clear() const;								//  clears the display or screen
+		void home() const;								//  sets the caret in the first position of the first line
+		void line(lcd_line line) const;							//  sets the caret in the first position of the given line (FIRST or SECOND)
+		void pos(lcd_line line, uint8_t col) const;					//  sets the caret in the position indicated by col (0 - 15) of the given line
 		
-		void backlight(lcd_mode mode = ON);					//  turns the backlight ON or OFF (ON is default)
-		void display(lcd_mode mode = ON) const;				//  turns the display ON or OFF (ON is default)
+		void backlight(lcd_mode mode = ON);						//  turns the backlight ON or OFF (ON is default)
+		void display(lcd_mode mode = ON) const;						//  turns the display ON or OFF (ON is default)
 		
 		/*
 		 *     This function prints a string of characters at the current caret position.
@@ -98,7 +98,7 @@ class LCD
 		 *     sprintf from stdio.h
 		 *     For example, to print a right justified string on the bottom line, do something like this:
 		 *     char buffer[17];								//  declare a buffer somewhere in your code
-		 *     sprintf(buffer, "%-16s", "Hello!");			//  use sprintf to format the text and copy it into the buffer
+		 *     sprintf(buffer, "%-16s", "Hello!");					//  use sprintf to format the text and copy it into the buffer
 		 *     lcd.line(SECOND);							//  caret to first position, bottom line
 		 *     lcd.print(buffer);							//  call the display function to print the string
 		 */
@@ -115,7 +115,7 @@ class LCD
 		void command(unsigned char command);
 	private:
 		void latch_data(const unsigned char data) const;	
-		void transmit(const unsigned char data) const;				//  transmits display commands
+		void transmit(const unsigned char data) const;					//  transmits display commands
 		void transmit(const char *data) const;						//  transmits data
 				
 		unsigned char _lcd_backlight;
