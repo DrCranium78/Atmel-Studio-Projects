@@ -42,7 +42,7 @@
 enum SQWM   : uint8_t {SQWOFF = 0x00, SQW1HZ = 0x10, SQW4K = 0x11, SQW8K = 0x12, SQW32K = 0x13};
 enum DOW    : uint8_t {MON = 1, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, SUN = 7};
 enum DSMODE : uint8_t {DSMODE24 = 0x00, DSMODE12 = 0x01};
-enum DSAMPM	: uint8_t {AM = 0x00, PM = 0x01};
+enum DSAMPM : uint8_t {AM = 0x00, PM = 0x01};
 	
 class DS1307
 {
@@ -61,15 +61,14 @@ class DS1307
 		/*
 		 *     Functions to set member fields
 		 */
-		bool set_12hms(uint8_t h, uint8_t m, uint8_t s, DSAMPM mi);			//  use this to set 12 hour mode
-		bool set_24hms(uint8_t h, uint8_t m, uint8_t s);				//  use this to set 24 hour mode
+		bool set_12hms(uint8_t h, uint8_t m, uint8_t s, DSAMPM mi);		//  use this to set 12 hour mode
+		bool set_24hms(uint8_t h, uint8_t m, uint8_t s);			//  use this to set 24 hour mode
 		bool set_ymd(uint8_t y, uint8_t m, uint8_t d);
-		void set_dow(DOW dow);								//  dow = day of week
+		void set_dow(DOW dow);							//  dow = day of week
 		
 		/*
 		 *     Functions to get member fields
-		 */
-		 
+		 */	 
 		void get_12hms(uint8_t &h, uint8_t &m, uint8_t &s, DSAMPM &mi) const;
 		void get_24hms(uint8_t &h, uint8_t &m, uint8_t &s) const;
 		void get_ymd(uint8_t &y, uint8_t &m, uint8_t &d) const;
@@ -101,12 +100,12 @@ class DS1307
 		/*
 		 *     Member fields
 		 */
-		uint8_t (*read_hr)(char);							//  pointer to a function
-		uint8_t _yr, _mth, _day, _dow;							//  year, month, day and day of week
-		uint8_t _hr, _min, _sec;							//  hour, minutes, seconds
+		uint8_t (*read_hr)(char);						//  pointer to a function
+		uint8_t _yr, _mth, _day, _dow;						//  year, month, day and day of week
+		uint8_t _hr, _min, _sec;						//  hour, minutes, seconds
 		
-		uint8_t _clkh;									//  clock halt
+		uint8_t _clkh;								//  clock halt
 		
-		DSAMPM _mi;									//  meridien indicator (AM/PM)
-		DSMODE _mode;									//  12 hour or 24 hour mode (24 is default)
+		DSAMPM _mi;								//  meridien indicator (AM/PM)
+		DSMODE _mode;								//  12 hour or 24 hour mode (24 is default)
 };
