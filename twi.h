@@ -3,7 +3,7 @@
  *
  * Version: 1.0.0
  * Created: 10.12.2020
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose: To facilitate communication between a single microcontroller and simple
  *          I2C devices on the TWI bus.
@@ -30,7 +30,7 @@
  *
  *          This software is covered by a modified MIT License, see paragraph 4
  *
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy
  *          of this software and associated documentation files (the "Software"), to deal
@@ -61,17 +61,17 @@ extern "C" {
 #endif
 	
 /*
- *     Initialize the i2c module
+ *     Initialize the TWI module
  */
 void twi_enable(void);
 
 /*
- *     Disable the i2c module
+ *     Disable the TWI module
  */
 void twi_disable(void);
 
 /*
- *     Check if the i2c module is enabled.
+ *     Check if the TWI module is enabled.
  *
  *     \return     1 if enabled, 0 if disabled.
  */
