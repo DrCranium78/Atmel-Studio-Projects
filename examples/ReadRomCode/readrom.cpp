@@ -2,13 +2,13 @@
  * readrom.cpp
  *
  * Created: 19.02.2022
- * Author : Frank Bjørnø
+ * Author : Frank BjÃ¸rnÃ¸
  *
  * Purpose: Read the 64-bit lasered ROM code from a ds18b20 digital thermometer
  *
  * License:
  *
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy
  *          of this software and associated documentation files (the "Software"), to deal
@@ -52,11 +52,11 @@ int main(void)
 	display.init();
 	display.backlight(ON);
 	
-		//  check that ds18b20 is connected
+		//  check that ds18b20 is connected, exit on failure
 	if (!ds18b20_is_connected())
 	{
 		display.print("DS18b20 offline.");
-		return 1;								//  terminate program
+		return 1;							//  terminate program
 	}
 	
 		//  read ROM, exit on failure
@@ -67,14 +67,14 @@ int main(void)
 	}
 	
 		//  display message
-	display.pos(FIRST, 4);						//  position cursor on first line, 4th column
+	display.pos(FIRST, 4);							//  position cursor on first line, 4th column
 	display.print("ROM CODE");
 	
 		//  prepare character string with ROM code
 		//  ROM code is stored in a little-endian system, meaning that least significant byte 
 		//  is stored at the smallest address and the most significant byte at the largest.
 	char *ptr = buffer;
-	for (int i = 7; i >= 0; i--)				//  read most significant byte first
+	for (int i = 7; i >= 0; i--)						//  read most significant byte first
 	{
 		sprintf(ptr, "%02x", romcode[i]);
 		ptr += 2;
