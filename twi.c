@@ -111,8 +111,8 @@
 
 
 
-static unsigned char _twi_enabled = 0;					//  keep track of i2c initialization
-static unsigned char _twi_address = 0x00;				//  keep track of address for repeat start condition
+static unsigned char _twi_enabled = 0;							//  keep track of i2c initialization
+static unsigned char _twi_address = 0x00;						//  keep track of address for repeat start condition
 
 
 /******************************************************************************************************
@@ -148,11 +148,11 @@ void twi_enable(void)
 
 void twi_disable(void)
 {
-	if (!_twi_enabled) return;						//  is i2c already disabled?
+	if (!_twi_enabled) return;							//  is i2c already disabled?
 	_twi_enabled = 0;
 	
-	TWCR     &= ~TWI_ENABLE_MASK;						//  Reset TWI interrupt flag, disable TWI module and TWI interrupt	
-	TWI_PORT &= ~TWI_PINMASK;						//  deactivate internal pull-ups for TWI
+	TWCR     &= ~TWI_ENABLE_MASK;							//  Reset TWI interrupt flag, disable TWI module and TWI interrupt	
+	TWI_PORT &= ~TWI_PINMASK;							//  deactivate internal pull-ups for TWI
 }
 
 
