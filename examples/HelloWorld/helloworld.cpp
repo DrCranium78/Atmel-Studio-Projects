@@ -2,13 +2,13 @@
  * helloworld.cpp
  *
  * Created: 31.01.2022
- *  Author: Frank Bjørnø
+ *  Author: Frank BjÃ¸rnÃ¸
  *
  * Purpose:	The simplest possible example of using the lcd library. Useful for verifying that the code works.  
  *
  * License:
  *
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy
  *          of this software and associated documentation files (the "Software"), to deal
@@ -40,8 +40,8 @@
 int main(void)
 {
 	LCD display;						//  declare
-	display.init();					//  initialize display. this also enables twi
-	display.backlight(ON);				//  turn backlight on
+	display.init();						//  initialize display. this also enables twi
+	display.backlight(ON);					//  turn backlight on
 	
 	display.print("Hello world.");
 }
