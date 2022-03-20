@@ -116,15 +116,15 @@ static bool is_valid_time(uint8_t h, uint8_t m, uint8_t s, DSMODE mode)
 
 /*
  *     The contents of the time and calendar registers in the ds1307 are
- *     in the binary coded decimal format. We therefore need the following
- *     two converter functions.
+ *     in the binary coded decimal format. The following two converter 
+ *     functions are therefore needed.
  *
- *     In the bcd numbering system, the given decimal number is segregated into
+ *     In the bcd numbering system, the given decimal number is divided into
  *     chunks of four bits for each decimal digit within the number. Each decimal 
  *     digit is converted into its direct binary form, usually represented in
  *     four bits.
- *     Example: decimal 45 will be converted to decimal 69. the binary representation
- *     of 69 is 0100 0101 (which by no coincidence is hexadecimal 45).
+ *     Example: Decimal 45 will be converted to decimal 69. The binary representation
+ *     of 69 is 0100 0101, which is hexadecimal 45.
  *     0100 = 4 and 0101 = 5.
  *     For our purposes, we only have to convert numbers no larger than 99, so the
  *     following simple functions will suffice:
@@ -158,7 +158,7 @@ static uint8_t bcd2dec(uint8_t bcd)
  */
 
 /*
- *     Process the bits from DS1307 register 0x00 in 12 hour mode
+ *     Process the bits from DS1307 register 0x00 in 12 hour mode.
  *
  *     \param data    Raw data read from DS1307 register 0x00.
  *     \return        Processed data with only the hour part.
@@ -259,7 +259,7 @@ void DS1307::set_mode(DSMODE m)
  *     \param h     Hour    (1 - 12)
  *     \param m     Minute  (0 - 59)
  *     \param s     Seconds (0 - 59)
- *     \param mi    Meridiem Indicator, either AM or PM
+ *     \param mi    Meridiem indicator, either AM or PM
  *     \return      Returns false if invalid time.
  *
  *     Note:        This function only updates member variables. No data is
@@ -312,7 +312,7 @@ bool DS1307::set_24hms(uint8_t h, uint8_t m, uint8_t s)
  */
 bool DS1307::set_ymd(uint8_t y, uint8_t m, uint8_t d)
 {
-		//  validate date. if invalid return early.
+		//  validate date. if invalid, return early.
 	if (!is_valid_date(y, m, d)) return false;
 		
 	_yr  = y;
