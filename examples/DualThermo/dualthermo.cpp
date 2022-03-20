@@ -2,13 +2,13 @@
  * dualthermo.cpp
  *
  * Created: 28.10.2021
- * Author : Frank Bjørnø
+ * Author : Frank BjÃ¸rnÃ¸
  *
  * Purpose: Display temperature readings from two DS18B20 digital thermometers on the same line.
  *
  * License:
  *
- *          Copyright (C) 2021 Frank Bjørnø
+ *          Copyright (C) 2021 Frank BjÃ¸rnÃ¸
  *
  *          1. Permission is hereby granted, free of charge, to any person obtaining a copy
  *          of this software and associated documentation files (the "Software"), to deal
@@ -51,10 +51,11 @@
 #include "ds18b20.h"
 
 LCD   display;
-char  display_buffer[6];								//  for preparing display output
+char  display_buffer[6];							//  for preparing display output
 float temp;
 
-	//  known ROM codes of the two ds18b20 thermometers, stored in little-endian format	
+	//  Known ROM codes of the two ds18b20 thermometers, stored in little-endian format
+	//  NB: Yours will be different.
 unsigned char ROMa[8]  = {0x28, 0x6e, 0x38, 0xdd, 0x06, 0x00, 0x00, 0x39};
 unsigned char ROMb[8]  = {0x28, 0x1c, 0x56, 0x5b, 0x0d, 0x00, 0x00, 0x6d};
 
@@ -86,8 +87,8 @@ int main(void)
 	display.print("Thermo 2:");
 	
 		//  initialize thermometers
-	ds18b20_set_rom(ROMa);								//  deactivate all but this
-	ds18b20_set_resolution(DS18B20_9BIT);				//  set resolution to 9 bits
+	ds18b20_set_rom(ROMa);							//  deactivate all but this
+	ds18b20_set_resolution(DS18B20_9BIT);					//  set resolution to 9 bits
 	
 	ds18b20_set_rom(ROMb);
 	ds18b20_set_resolution(DS18B20_9BIT);
@@ -98,7 +99,7 @@ int main(void)
 	{		
 			//  notify all devices on the line to start temperature conversion
 		ds18b20_start_conversion();			
-		_delay_ms(100);									//  wait for conversion
+		_delay_ms(100);							//  wait for conversion
 		
 			//  get and display first temperature
 		ds18b20_set_rom(ROMa);
